@@ -9,18 +9,20 @@ set(SOURCES
   main.cpp
 )
 
-add_executable(${PROJECT_NAME} ${SOURCES})
+set(EXEC_NAME ${PROJECT_NAME}_${CMAKE_BUILD_TYPE})
+
+add_executable(${EXEC_NAME} ${SOURCES})
 
 add_subdirectory(poli_dynamic)
 add_subdirectory(poli_static)
 
-target_include_directories(${PROJECT_NAME}
+target_include_directories(${EXEC_NAME}
   PRIVATE
     poli_static/include
     poli_dynamic/include
 )
 
-target_link_libraries(${PROJECT_NAME}
+target_link_libraries(${EXEC_NAME}
   PRIVATE
     PoliDynamicLib
     PoliStaticLib

@@ -10,7 +10,7 @@
 
 namespace config
 {
-    constexpr size_t size = 2684354560;
+    constexpr int size = INT_MAX;
 }
 
 void initTab(int *tab, int size, int val = -1)
@@ -33,13 +33,13 @@ void initTab(int *tab, int size, int val = -1)
 
 int main()
 {
-    int *tab_a = new int[config::size];
-    int *tab_b = new int[config::size];
-    int *tab_result = new int[config::size];
+    std::unique_ptr<int[]> tab_a = std::make_unique<int[]>(config::size);
+    std::unique_ptr<int[]> tab_b = std::make_unique<int[]>(config::size);
+    std::unique_ptr<int[]> tab_result = std::make_unique<int[]>(config::size);
 
-    initTab(tab_a, config::size);
-    initTab(tab_b, config::size);
-    initTab(tab_result, config::size, 0);
+    initTab(tab_a.get(), config::size);
+    initTab(tab_b.get(), config::size);
+    initTab(tab_result.get(), config::size, 0);
 
     std::shared_ptr<zbp::poli_dynamic::IOperation> dyn_op;
     dyn_op = std::make_shared<zbp::poli_dynamic::Addition>();
@@ -54,7 +54,7 @@ int main()
     auto duration_dynamic = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time);
     std::cout << "DYNAMIC Execution time: " << duration_dynamic.count() << " ms" << std::endl;
 
-    initTab(tab_result, config::size, 0);
+    initTab(tab_result.get(), config::size, 0);
 
     zbp::poli_static::Addition static_add;
     start_time = std::chrono::high_resolution_clock::now();
@@ -68,10 +68,6 @@ int main()
     std::cout << "STATIC Execution time: " << duration_static.count() << " ms" << std::endl;
 
     std::cout << "Performance ratio: " << (static_cast<double>(duration_dynamic.count()) / static_cast<double>(duration_static.count())) << std::endl;
-
-    delete[] tab_a;
-    delete[] tab_b;
-    delete[] tab_result;
 
     return 0;
 }
