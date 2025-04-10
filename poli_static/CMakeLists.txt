@@ -2,6 +2,7 @@ set(NAME PoliStaticLib)
 
 add_library(${NAME} STATIC
     src/Addition.cpp
+    src/Hashing.cpp
 )
 
 target_include_directories(${NAME}
